@@ -1,6 +1,7 @@
 #include "transfermanager.h"
 
 #include <QDir>
+#include <QDirIterator>
 #include <QFile>
 #include <QFileInfo>
 #include <QAtomicInt>
