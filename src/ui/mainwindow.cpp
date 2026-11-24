@@ -408,3 +408,135 @@ void MainWindow::onRename()
                              tr("Could not rename %1").arg(sel.first()));
     }
 }
+
+void MainWindow::onNewFolder()
+{
+    if (!currentView())
+        return;
+    bool ok = false;
+    const QString name = QInputDialog::getText(this, tr("New Folder"),
+        tr("Folder name:"), QLineEdit::Normal,
+        FS::uniqueChildName(currentView()->path(), tr("New Folder")), &ok);
+    if (!ok || name.isEmpty())
+        return;
+    QString err;
+    const QString path = currentView()->path() + QLatin1Char('/') + name;
+    if (!FS::createFolder(path, &err))
+        QMessageBox::warning(this, tr("Create failed"), err);
+    currentView()->model()->reload();
+}
+
+void MainWindow::onNewFile()
+{
+    if (!currentView())
+        return;
+    bool ok = false;
+    const QString name = QInputDialog::getText(this, tr("New File"),
+        tr("File name:"), QLineEdit::Normal,
+        FS::uniqueChildName(currentView()->path(), tr("untitled.txt")), &ok);
+    if (!ok || name.isEmpty())
+        return;
+    QString err;
+    const QString path = currentView()->path() + QLatin1Char('/') + name;
+    if (!FS::createEmptyFile(path, &err))
+        QMessageBox::warning(this, tr("Create failed"), err);
+    currentView()->model()->reload();
+}
+
+void MainWindow::onProperties()
+{
+    if (!currentView())
+        return;
+    const QStringList sel = currentView()->selectedPaths();
+    if (sel.isEmpty())
+        return;
+    // Milestone 2: dedicated Properties dialog with permissions tab.
+    QString info;
+    for (const QString &p : sel) {
+        const QFileInfo fi(p);
+        info += QStringLiteral("%1\n  Type:  %2\n  Size:  %3\n  Modified: %4\n\n")
+            .arg(fi.fileName(),
+                 fi.isDir() ? tr("Folder") : tr("File"),
+                 FS::humanSize(fi.isDir() ? 0 : fi.size()),
+                 fi.lastModified().toString(Qt::SystemLocaleLongDate));
+    }
+    QMessageBox::information(this, tr("Properties"), info.trimmed());
+}
+
+void MainWindow::onSelectAll()
+{
+    if (currentView())
+        currentView()->selectAllFiles();
+}
+
+void MainWindow::onRefresh()
+{
+    if (currentView())
+        currentView()->model()->reload();
+}
+
+void MainWindow::onToggleHidden()
+{
+    const bool on = !Settings::showHidden();
+    Settings::setShowHidden(on);
+    if (currentView())
+        currentView()->setShowHidden(on);
+    updateActions();
+}
+
+void MainWindow::onViewModeChanged()
+{
+    QActionGroup *grp = qobject_cast<QActionGroup *>(sender());
+    if (!grp)
+        return;
+    const QAction *checked = grp->checkedAction();
+    if (!checked)
+        return;
+    const int mode = checked->data().toInt();
+    Settings::setViewMode(mode);
+    if (currentView())
+        currentView()->setViewMode(mode);
+}
+
+void MainWindow::onSearchTriggered()
+{
+    if (currentView())
+        currentView()->focusFilter();
+}
+
+// Milestone 2+ module launchers - placeholders wired to the Tools menu
+void MainWindow::onDriveManager()      {}
+void MainWindow::onNetworkManager()    {}
+void MainWindow::onCloudConnections()  {}
+void MainWindow::onControlPanel()
+{
+    const QString cmd = Settings::controlPanelCommand();
+    if (!QStandardPaths::findExecutable(cmd).isEmpty()) {
+        QProcess::startDetached(cmd);
+    } else {
+        QMessageBox::information(this, tr("Control Panel"),
+            tr("'%1' was not found. Install SereneOS Control Panel or set the "
+               "command in Preferences.").arg(cmd));
+    }
+}
+
+void MainWindow::onPreferences()
+{
+    QMessageBox::information(this, tr("Preferences"),
+        tr("Full preferences dialog arrives in milestone 2. "
+           "Theme toggle: coming with dark/light switching."));
+}
+
+void MainWindow::updateActions()
+{
+    if (!currentView())
+        return;
+    const int selCount = currentView()->selectedPaths().size();
+    const QString p = currentView()->path();
+    m_status->setText(p);
+    const FileModel *m = currentView()->model();
+    m_itemInfo->setText(tr("%1 item(s)").arg(m->rowCount()));
+    if (selCount > 0)
+        m_itemInfo->setText(tr("%1 of %2 selected")
+                                .arg(selCount).arg(m->rowCount()));
+}
