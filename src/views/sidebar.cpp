@@ -1,5 +1,6 @@
 #include "sidebar.h"
 
+#include <QDir>
 #include <QListWidget>
 #include <QMenu>
 #include <QSettings>
@@ -169,14 +170,31 @@ void Sidebar::onAddBookmark()
     if (m_currentPath.isEmpty())
         return;
     QSettings s(QStringLiteral("SereneForge"), QStringLiteral("SereneFileExplorer"));
-    int count = s.beginReadArray(QStringLiteral("bookmarks"));
+
+    // Load existing bookmarks
+    const int count = s.beginReadArray(QStringLiteral("bookmarks"));
+    QList<QPair<QString, QString>> existing;
+    for (int i = 0; i < count; ++i) {
+        s.setArrayIndex(i);
+        existing.append({ s.value(QStringLiteral("name")).toString(),
+                          s.value(QStringLiteral("path")).toString() });
+    }
     s.endArray();
 
-    // Avoid duplicates
+    // Skip duplicates
+    for (const auto &bm : existing) {
+        if (bm.second == m_currentPath)
+            return;
+    }
+    existing.append({ QDir(m_currentPath).dirName(), m_currentPath });
+
+    s.remove(QStringLiteral("bookmarks"));
     s.beginWriteArray(QStringLiteral("bookmarks"));
-    s.setArrayIndex(count);
-    s.setValue(QStringLiteral("name"), QDir(m_currentPath).dirName());
-    s.setValue(QStringLiteral("path"), m_currentPath);
+    for (int i = 0; i < existing.size(); ++i) {
+        s.setArrayIndex(i);
+        s.setValue(QStringLiteral("name"), existing[i].first);
+        s.setValue(QStringLiteral("path"), existing[i].second);
+    }
     s.endArray();
     reloadBookmarks();
 }
@@ -198,7 +216,6 @@ void Sidebar::onRemoveBookmark()
     }
     s.endArray();
 
-    s.beginWriteArray(QStringLiteral("bookmarks"));
     s.remove(QStringLiteral("bookmarks"));
     s.beginWriteArray(QStringLiteral("bookmarks"));
     for (int i = 0; i < keep.size(); ++i) {
