@@ -2,6 +2,7 @@
 
 #include <QThreadPool>
 #include <QDir>
+#include <QFileInfo>
 #include <algorithm>
 
 #include "core/filesystem.h"
