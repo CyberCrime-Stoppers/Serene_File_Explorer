@@ -1,0 +1,10 @@
+build/
+build-*/
+*.o
+*.user
+CMakeLists.txt.user
+.qtc_clangd/
+compile_commands.json
+.vscode/
+.idea/
+core
