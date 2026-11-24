@@ -2,6 +2,8 @@
 
 #include <QLineEdit>
 #include <QListView>
+#include <QMessageBox>
+#include <QDir>
 #include <QToolButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
