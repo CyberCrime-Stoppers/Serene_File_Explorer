@@ -23,7 +23,6 @@ private slots:
     void newTab();
     void closeTab(int index);
     void closeCurrentTab();
-    void onCloseOtherTabs();
     void onTabChanged(int index);
 
     // Edit operations
