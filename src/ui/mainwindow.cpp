@@ -4,17 +4,21 @@
 #include <QActionGroup>
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
+#include <QDir>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QProgressBar>
-#include <QShortcut>
+#include <QStandardPaths>
 #include <QStatusBar>
 #include <QTabWidget>
 #include <QToolBar>
+#include <QUrl>
 
 #include "core/clipboard.h"
 #include "core/filesystem.h"
