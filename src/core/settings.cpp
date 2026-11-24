@@ -1,6 +1,7 @@
 #include "settings.h"
 
 #include <QSettings>
+#include <QStringList>
 
 namespace Settings {
 
@@ -70,6 +71,28 @@ QString controlPanelCommand()
 void setControlPanelCommand(const QString &cmd)
 {
     store().setValue(QStringLiteral("integration/controlPanelCommand"), cmd);
+}
+
+// Sidebar bookmarks: stored as a list of absolute paths
+QStringList bookmarks()
+{
+    return store().value(QStringLiteral("sidebar/bookmarks")).toStringList();
+}
+
+void setBookmarks(const QStringList &paths)
+{
+    store().setValue(QStringLiteral("sidebar/bookmarks"), paths);
+}
+
+// Tags: stored as a list of label strings
+QStringList tags()
+{
+    return store().value(QStringLiteral("sidebar/tags")).toStringList();
+}
+
+void setTags(const QStringList &tags)
+{
+    store().setValue(QStringLiteral("sidebar/tags"), tags);
 }
 
 } // namespace Settings

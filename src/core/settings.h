@@ -30,4 +30,12 @@ void    setSearchBackend(int mode);
 QString controlPanelCommand();
 void    setControlPanelCommand(const QString &cmd);
 
+// Sidebar bookmarks: absolute paths, ordered
+QStringList bookmarks();
+void        setBookmarks(const QStringList &paths);
+
+// Tags: simple label list (per-file tagging arrives with media work)
+QStringList tags();
+void        setTags(const QStringList &tags);
+
 } // namespace Settings
