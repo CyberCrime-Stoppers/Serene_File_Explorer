@@ -12,7 +12,17 @@
 FileModel::FileModel(QObject *parent)
     : QAbstractListModel(parent)
 {
+    qRegisterMetaType<FileEntry>("FileEntry");
     qRegisterMetaType<QList<FileEntry>>("QList<FileEntry>");
+}
+
+void FileModel::setPath(const QString &absPath)
+{
+    const QString norm = QDir(absPath).absolutePath();
+    if (norm == m_path)
+        return;
+    m_path = norm;
+    reload();
 }
 
 int FileModel::rowCount(const QModelIndex &parent) const

@@ -31,6 +31,7 @@ public:
 
     // State
     QString path() const { return m_path; }
+    void setPath(const QString &absPath);   // normalize + reload
 
     void setSortMode(int mode);            // Settings::SortMode
     void setShowHidden(bool show);
