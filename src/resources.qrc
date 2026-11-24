@@ -1,6 +1,9 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-    <qresource prefix="/">
-        <file>resources/icons/serene-folder.png</file>
+    <qresource prefix="/icons">
+        <!-- Drop a serene-folder.png here (64x64 Serene green/purple folder)
+             and uncomment the line below:
+        <file>serene-folder.png</file>
+        -->
     </qresource>
 </RCC>

@@ -21,8 +21,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationName(QStringLiteral("Serene File Explorer"));
     QApplication::setOrganizationName(QStringLiteral("SereneForge"));
     QApplication::setApplicationVersion(QStringLiteral(APP_VERSION));
-    QApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("folder"),
-                                                 QIcon(":/icons/serene-folder.png")));
+    QApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("folder")));
 
     QCommandLineParser parser;
     parser.setApplicationDescription(
