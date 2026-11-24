@@ -6,6 +6,7 @@
  */
 #include <QObject>
 #include <QQueue>
+#include <QAtomicInt>
 
 #include "core/types.h"
 
