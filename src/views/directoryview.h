@@ -6,16 +6,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 #include <QWidget>
+#include <QModelIndex>
 
 #include "core/types.h"
 
 class QLineEdit;
 class QListView;
-class QStackedWidget;
 class QToolButton;
 class QVBoxLayout;
 class FileModel;
-class QStandardItemModel;
 
 class DirectoryView : public QWidget
 {
