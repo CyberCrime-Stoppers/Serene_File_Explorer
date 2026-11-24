@@ -17,6 +17,7 @@
 #include <QProgressBar>
 #include <QProcess>
 #include <QShortcut>
+#include <QSplitter>
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QTabWidget>
@@ -29,6 +30,7 @@
 #include "models/filemodel.h"
 #include "transfer/transfermanager.h"
 #include "ui/theme.h"
+#include "ui/sidebar.h"
 #include "views/directoryview.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -87,14 +89,30 @@ void MainWindow::buildUi()
 {
     setWindowTitle(tr("Serene File Explorer"));
 
+    // Milestone 2: sidebar + splitter layout wrapping the tab area
+    m_sidebar = new Sidebar(this);
     m_tabs = new QTabWidget(this);
     m_tabs->setTabsClosable(true);
     m_tabs->setMovable(true);
     m_tabs->setDocumentMode(true);
-    setCentralWidget(m_tabs);
+
+    m_splitter = new QSplitter(this);
+    m_splitter->addWidget(m_sidebar);
+    m_splitter->addWidget(m_tabs);
+    m_splitter->setStretchFactor(0, 0);
+    m_splitter->setStretchFactor(1, 1);
+    m_splitter->setCollapsible(0, false);
+    m_splitter->setCollapsible(1, false);
+    setCentralWidget(m_splitter);
 
     connect(m_tabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
     connect(m_tabs, &QTabWidget::currentChanged, this, &MainWindow::onTabChanged);
+
+    // Sidebar navigation feeds the active tab; path changes update the sidebar context
+    connect(m_sidebar, &Sidebar::placeActivated, this, [this](const QString &path) {
+        if (currentView())
+            currentView()->go(path);
+    });
 
     // Status bar
     m_status   = new QLabel(this);

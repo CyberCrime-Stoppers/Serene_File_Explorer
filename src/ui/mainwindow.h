@@ -10,6 +10,8 @@ class TransferManager;
 class QTabWidget;
 class QLabel;
 class QProgressBar;
+class QSplitter;
+class Sidebar;
 
 class MainWindow : public QMainWindow
 {
@@ -64,4 +66,8 @@ private:
     QLabel          *m_itemInfo   = nullptr;
     QProgressBar    *m_progress   = nullptr;
     TransferManager *m_transfers  = nullptr;
+
+    // Milestone 2 sidebar
+    Sidebar     *m_sidebar    = nullptr;
+    QSplitter   *m_splitter   = nullptr;
 };
