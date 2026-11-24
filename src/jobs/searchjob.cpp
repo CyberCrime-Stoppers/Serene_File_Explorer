@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QRegularExpression>
+#include <QStandardPaths>
 
 #include "core/filesystem.h"
 
