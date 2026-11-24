@@ -17,6 +17,7 @@ set(SEREFE_SOURCES
     src/core/clipboard.cpp
     src/core/settings.cpp
     src/ui/theme.cpp
+    src/ui/sidebar.cpp
     src/ui/mainwindow.cpp
     src/models/filemodel.cpp
     src/jobs/listjob.cpp
@@ -31,6 +32,7 @@ set(SEREFE_HEADERS
     src/core/clipboard.h
     src/core/settings.h
     src/ui/theme.h
+    src/ui/sidebar.h
     src/ui/mainwindow.h
     src/models/filemodel.h
     src/jobs/listjob.h
