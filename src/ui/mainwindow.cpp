@@ -12,7 +12,6 @@
 #include <QLabel>
 #include <QLocale>
 #include <QMenuBar>
-#include <QLocale>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QProgressBar>
