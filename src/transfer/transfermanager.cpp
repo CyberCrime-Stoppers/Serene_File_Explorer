@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QAtomicInt>
 #include <QThread>
 #include <QCoreApplication>
 #include <QDebug>
