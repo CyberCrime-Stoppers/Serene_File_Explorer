@@ -10,7 +10,9 @@
 #include <QFileInfo>
 #include <QInputDialog>
 #include <QLabel>
+#include <QLocale>
 #include <QMenuBar>
+#include <QLocale>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QProgressBar>
@@ -111,18 +113,22 @@ void MainWindow::buildMenus()
 {
     // ---------- File menu
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-    auto *actNewTab = fileMenu->addAction(tr("New &Tab"), this, &MainWindow::newTab,
-                                          QKeySequence(Qt::CTRL | Qt::Key_T));
-    auto *actNewWin = fileMenu->addAction(tr("New &Window"), qApp, []() {
+    auto *actNewTab = fileMenu->addAction(tr("New &Tab"), QKeySequence(Qt::CTRL | Qt::Key_T),
+                                          this, &MainWindow::newTab);
+    auto *actNewWin = fileMenu->addAction(tr("New &Window"), QKeySequence(Qt::CTRL | Qt::Key_N),
+                                          qApp, []() {
         // Milestone 2: spawn detached instance
-    }, QKeySequence(Qt::CTRL | Qt::Key_N));
+    });
     fileMenu->addSeparator();
-    auto *actNewFolder = fileMenu->addAction(tr("New F&older"), this, &MainWindow::onNewFolder,
-                                             QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_N));
-    auto *actNewFile   = fileMenu->addAction(tr("New &File"), this, &MainWindow::onNewFile,
-                                             QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
+    auto *actNewFolder = fileMenu->addAction(tr("New F&older"),
+                                             QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_N),
+                                             this, &MainWindow::onNewFolder);
+    auto *actNewFile   = fileMenu->addAction(tr("New &File"),
+                                             QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F),
+                                             this, &MainWindow::onNewFile);
     fileMenu->addSeparator();
-    fileMenu->addAction(tr("&Quit"), qApp, &QApplication::quit, QKeySequence(Qt::CTRL | Qt::Key_Q));
+    fileMenu->addAction(tr("&Quit"), QKeySequence(Qt::CTRL | Qt::Key_Q),
+                        qApp, &QApplication::quit);
 
     // ---------- Edit menu
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
@@ -460,7 +466,7 @@ void MainWindow::onProperties()
             .arg(fi.fileName(),
                  fi.isDir() ? tr("Folder") : tr("File"),
                  FS::humanSize(fi.isDir() ? 0 : fi.size()),
-                 fi.lastModified().toString(Qt::SystemLocaleLongDate));
+                 QLocale::system().toString(fi.lastModified(), QLocale::LongFormat));
     }
     QMessageBox::information(this, tr("Properties"), info.trimmed());
 }
