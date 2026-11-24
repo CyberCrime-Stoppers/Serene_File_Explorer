@@ -14,6 +14,8 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QProgressBar>
+#include <QProcess>
+#include <QShortcut>
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QTabWidget>
